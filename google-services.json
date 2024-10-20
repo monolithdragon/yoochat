@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "848244201144",
+    "project_id": "yoochat-6bcb8",
+    "storage_bucket": "yoochat-6bcb8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848244201144:android:f379bca3ce7f4e9e47864d",
+        "android_client_info": {
+          "package_name": "com.yoozone.yoochat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy_QpQVzVparLMw5Fb1biQNHitq7LvUtE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

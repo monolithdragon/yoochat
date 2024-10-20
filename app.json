@@ -1,0 +1,47 @@
+{
+	"expo": {
+		"name": "yoochat",
+		"slug": "yoochat",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./src/assets/images/icon.png",
+		"scheme": "myapp",
+		"userInterfaceStyle": "automatic",
+		"splash": {
+			"image": "./src/assets/images/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"ios": {
+			"supportsTablet": true
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./src/assets/images/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"googleServicesFile": "./google-services.json",
+			"package": "com.yoozone.yoochat"
+		},
+		"web": {
+			"bundler": "metro",
+			"output": "static",
+			"favicon": "./src/assets/images/favicon.png"
+		},
+		"plugins": [
+			"expo-router",
+			"@react-native-firebase/app",
+			"@react-native-firebase/auth",
+			"@react-native-firebase/crashlytics"
+		],
+		"experiments": {
+			"typedRoutes": true
+		},
+		"extra": {
+			"eas": {
+				"projectId": "ab5e2cdb-b56f-4de8-b585-f6107dffeb80"
+			}
+		},
+		"owner": "monolithdragon"
+	}
+}
