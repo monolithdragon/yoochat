@@ -15,7 +15,7 @@ export default function SignIn() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={-70}>
+      keyboardVerticalOffset={-90}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <SafeAreaView className='flex h-full p-5 bg-white dark:bg-[#292929]'>
           <AuthAnimatedBackground className='-right-[248]' />
