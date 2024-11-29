@@ -25,3 +25,29 @@ declare interface InputFieldProps extends TextInputProps {
   iconHeight?: number;
   iconColor?: ColorValue;
 }
+
+interface GradientConfig {
+  colors: [string, string, ...string[]];
+  start?: { x: number; y: number };
+  end?: { x: number; y: number };
+}
+
+declare interface ColorConfig {
+  active: GradientConfig;
+}
+
+interface CheckboxColor extends ColorConfig {
+  checkMark?: string;
+}
+
+declare interface CheckboxProps {
+  text?: string;
+  color: CheckboxColor;
+  disabled?: boolean;
+  value?: boolean;
+  onValueChange?: (value: boolean) => void;
+  animationConfig?: WithTimingConfig;
+  containerClassName?: string;
+  checkboxClassName?: string;
+  textClassName?: string;
+}
