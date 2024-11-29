@@ -1,18 +1,6 @@
-import { View, Text, TouchableOpacity, TouchableOpacityProps, ColorValue } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-
-type ButtonProps = {
-  title?: string;
-  IconLeft?: any;
-  IconRight?: any;
-  iconWidth?: number;
-  iconHeight?: number;
-  iconColor?: ColorValue;
-  className?: string;
-  labelStyle?: string;
-  useGradient?: boolean;
-  gradientColors?: [string, string, ...string[]];
-} & TouchableOpacityProps;
+import { ButtonProps } from '@/types';
 
 export function Button({
   title,
