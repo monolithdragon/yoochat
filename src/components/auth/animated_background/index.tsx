@@ -1,3 +1,4 @@
+import { colors } from '@/constants/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useColorScheme } from 'react-native';
 import Animated, {
@@ -37,7 +38,7 @@ export function AuthAnimatedBackground({ className }: Props) {
       className={`absolute w-[1000px] flex items-center justify-center overflow-hidden border-[60px] border-secondary-50 dark:border-neutral-800 ${className}`}
       style={animationStyle}>
       <LinearGradient
-        colors={colorScheme === 'light' ? ['#40C4FF', '#03A9F4'] : ['#1565C0', '#0F4888']}
+        colors={colorScheme === 'light' ? colors.gradient.light : colors.gradient.dark}
         className='w-full h-full '
       />
     </Animated.View>
