@@ -71,4 +71,8 @@ export const colors = {
     800: '#393a4c',
     900: '#2c2d3a',
   },
+  gradient: {
+    light: ['#40C4FF', '#03A9F4'],
+    dark: ['#1565C0', '#0F4888'],
+  } as const,
 };
