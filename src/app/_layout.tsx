@@ -1,9 +1,11 @@
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { AuthProvider } from '@/services/providers/auth/insex';
 import '@/global.css';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,23 +29,25 @@ export default function AppLayout() {
   }
 
   return (
-    <>
-      <Stack>
-        <Stack.Screen
-          name='index'
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='(auth)'
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='(root)'
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name='+not-found' />
-      </Stack>
-      <StatusBar style='auto' />
-    </>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <Stack>
+          <Stack.Screen
+            name='index'
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='(auth)'
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='(root)'
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name='+not-found' />
+        </Stack>
+        <StatusBar hidden />
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
