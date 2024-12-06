@@ -1,4 +1,4 @@
-import { ColorValue, TouchableOpacityProps } from 'react-native';
+import { ColorValue, TouchableOpacityProps, TextInputProps } from 'react-native';
 
 declare interface ButtonProps extends TouchableOpacityProps {
   title?: string;
@@ -13,11 +13,16 @@ declare interface ButtonProps extends TouchableOpacityProps {
   gradientColors?: [string, string, ...string[]];
 }
 
+interface ContainerStyleProps {
+  isFocused: boolean;
+}
+
 declare interface InputFieldProps extends TextInputProps {
   label?: string;
   IconLeft?: any;
   IconRight?: any;
   secureTextEntry?: boolean;
+  className?: string;
   labelStyle?: string;
   containerStyle?: string | (({ isFocused }: ContainerStyleProps) => string);
   inputStyle?: string;
@@ -50,4 +55,12 @@ declare interface CheckboxProps {
   containerClassName?: string;
   checkboxClassName?: string;
   textClassName?: string;
+}
+
+declare interface AuthState {
+  phoneNumber?: string;
+  verificationCode?: string;
+  verificationId?: string;
+  isValidPhoneNumber?: boolean;
+  rememberMe?: boolean;
 }
