@@ -3,9 +3,9 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { AuthProvider } from '@/services/providers/auth/insex';
-import '@/global.css';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthProvider } from '@/services/providers/auth';
+import '@/global.css';
 
 SplashScreen.preventAutoHideAsync();
 
