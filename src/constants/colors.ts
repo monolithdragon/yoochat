@@ -74,5 +74,5 @@ export const colors = {
   gradient: {
     light: ['#40C4FF', '#03A9F4'],
     dark: ['#1565C0', '#0F4888'],
-  } as const,
+  } as any,
 };
