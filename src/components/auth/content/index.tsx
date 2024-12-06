@@ -1,76 +1,66 @@
-import { View, Text } from 'react-native';
-import React, { useCallback, useState } from 'react';
-import { PhoneInput } from './phone_input';
+import { Alert, View } from 'react-native';
+import React, { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/constants/icons';
+import { useAuth } from '@/hooks/useAuth';
+import { colors } from '@/constants/colors';
+import { RenderSendSms } from './render_send_sms';
+import { RenderVerifyCode } from './render_verifycode';
 
-const PHONE_VALIDATION = {
-  MIN_LENGTH: 8,
-  MAX_LENGTH: 11,
-};
+export function AuthContent() {
+  const { authState, setAuthState, signInWithPhone, verifyCode, user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
-type AuthState = {
-  phoneNumber: string | undefined;
-  verificationCode: string | undefined;
-  isValidPhoneNumber: boolean;
-  rememberMe: boolean;
-};
+  const handleSendCode = async () => {
+    if (!authState.isValidPhoneNumber) {
+      Alert.alert('Hiba', 'Kérjük, adj meg egy érvényes telefonszámot!');
+      return;
+    }
 
-export default function AuthContent() {
-  const [state, setState] = useState<AuthState>({
-    phoneNumber: undefined,
-    verificationCode: undefined,
-    isValidPhoneNumber: false,
-    rememberMe: false,
-  });
+    setIsLoading(true);
 
-  const validatePhoneNumber = useCallback((number: string) => {
-    const cleaned = number.replace(/\D/g, '');
-    return (
-      cleaned.length >= PHONE_VALIDATION.MIN_LENGTH && cleaned.length <= PHONE_VALIDATION.MAX_LENGTH
-    );
-  }, []);
+    try {
+      const confirmation = await signInWithPhone(authState.phoneNumber!);
+      setAuthState({
+        verificationId: confirmation.verificationId!,
+      });
+      Alert.alert('Sikeres', 'Az SMS kód elküldve!');
+    } catch (error: any) {
+      console.error('SMS küldési hiba:', error);
+      Alert.alert('Hiba', 'Nem sikerült elküldeni az SMS-t. Kérjük, próbáld újra!');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // const formatFullNumber = useCallback(
-  //   (number: string) => {
-  //     const cleaned = number.replace(/\D/g, '');
-  //     return `${countryCode}${cleaned}`;
-  //   },
-  //   [countryCode]
-  // );
+  const handleVerifyCode = async () => {
+    if (!authState.verificationCode) return;
 
-  const handlePhoneNumberChange = useCallback((number: string) => {
-    const sanitizedNumber = number.replace(/[^\d\s]/g, '');
-    setState((prev) => ({
-      ...prev,
-      phoneNumber: sanitizedNumber,
-      isValidPhoneNumber: validatePhoneNumber(sanitizedNumber),
-    }));
-  }, []);
+    setIsLoading(true);
 
-  const renderPhoneInput = (
-    <>
-      <Text className='text-xl text-center font-poppins-regular text-secondary-900 dark:text-secondary-50'>
-        You will get a code via sms.
-      </Text>
-      <PhoneInput
-        value={state.phoneNumber}
-        onChangeText={(value) => handlePhoneNumberChange(value)}
-      />
-    </>
-  );
+    try {
+      await verifyCode(authState.verificationId!, authState.verificationCode!);
+      Alert.alert('Logged in successfully!');
+    } catch (error: any) {
+      console.error('Kód ellenőrzési hiba:', error);
+      Alert.alert('Hiba', 'Helytelen kód! Kérjük, próbáld újra.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <View className='items-center justify-center flex-1'>
-      <View className='w-full gap-y-5'>
-        {renderPhoneInput}
-        <View className='flex flex-row items-center justify-between w-full'>
+      <View className='w-full'>
+        {!authState.verificationId ? <RenderSendSms /> : <RenderVerifyCode />}
+        <View className='flex flex-row items-center justify-between w-full mt-6'>
           <Checkbox
             text='Remember Me'
             color={{ active: { colors: ['#40C4FF', '#03A9F4'] } }}
-            value={state.rememberMe}
-            onValueChange={() => setState((prev) => ({ ...prev, rememberMe: !prev.rememberMe }))}
+            value={authState.rememberMe}
+            onValueChange={() => setAuthState({ rememberMe: !authState.rememberMe })}
+            disabled={isLoading}
           />
           <Button
             IconLeft={ArrowRight}
@@ -79,8 +69,9 @@ export default function AuthContent() {
             iconHeight={32}
             className='w-[3.75rem] h-[3.75rem] rounded-full disabled:opacity-40'
             useGradient
-            gradientColors={['#40C4FF', '#03A9F4']}
-            disabled={state.isValidPhoneNumber}
+            gradientColors={colors.gradient.light}
+            disabled={!authState.isValidPhoneNumber || isLoading}
+            onPress={!authState.verificationId ? handleSendCode : handleVerifyCode}
           />
         </View>
       </View>
