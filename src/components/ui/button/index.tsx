@@ -39,7 +39,7 @@ export function Button({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`overflow-hidden flex flex-row items-center justify-center ${className}`}
+      className={`overflow-hidden ${className}`}
       {...props}>
       {useGradient ? (
         <LinearGradient

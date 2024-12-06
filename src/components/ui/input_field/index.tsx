@@ -9,6 +9,7 @@ export const InputField = React.forwardRef<TextInput, InputFieldProps>(
       IconLeft,
       IconRight,
       secureTextEntry,
+      className,
       labelStyle,
       containerStyle,
       inputStyle,
@@ -33,15 +34,9 @@ export const InputField = React.forwardRef<TextInput, InputFieldProps>(
     }
 
     return (
-      <View className={`w-full flex justify-center ${label ? 'h-20' : 'h-[60px]'}`}>
-        {label && (
-          <Text
-            className={`text-left text-neutral-500 dark:text-neutral-50 font-poppins-regular ${labelStyle}`}>
-            {label}
-          </Text>
-        )}
-        <View
-          className={`flex flex-row justify-start items-center w-full gap-x-3 ${containerClasses}`}>
+      <View className='mb-4'>
+        {label && <Text className={labelStyle}>{label}</Text>}
+        <View className={`flex flex-row items-center px-3 py-2 gap-x-3 ${containerClasses}`}>
           {IconLeft && (
             <IconLeft
               width={iconWidth}
@@ -51,7 +46,7 @@ export const InputField = React.forwardRef<TextInput, InputFieldProps>(
           )}
 
           <TextInput
-            className={`flex-1 items-stretch p-4 text-xl text-neutral-900 dark:text-neutral-50 ${inputStyle}`}
+            className={`flex-1 items-center text-2xl text-neutral-900 dark:text-neutral-50 disabled:opacity-40 ${inputStyle}`}
             placeholderTextColor={placeholderColor}
             secureTextEntry={secureTextEntry}
             onFocus={() => setIsFocused(true)}
