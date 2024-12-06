@@ -1,4 +1,5 @@
 import { User } from '@/models/user';
+import { AuthState } from '@/types';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import React from 'react';
 
@@ -12,6 +13,8 @@ export interface AuthContextType {
     profileImage?: string
   ) => Promise<void>;
   signOut: () => Promise<void>;
+  authState: AuthState;
+  setAuthState: (value: AuthState) => void;
 }
 
 export const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
