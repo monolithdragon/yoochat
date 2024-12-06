@@ -1,11 +1,11 @@
-export interface CountryItem {
+export interface Country {
   name: Record<string, string>;
   dial_code: string;
   code: string;
   flag: string;
 }
 
-export const countryCodes: CountryItem[] = [
+export const countries: Country[] = [
   {
     name: {
       en: 'Afghanistan',
