@@ -34,9 +34,9 @@ export const InputField = React.forwardRef<TextInput, InputFieldProps>(
     }
 
     return (
-      <View className='mb-4'>
+      <View className='flex-1'>
         {label && <Text className={labelStyle}>{label}</Text>}
-        <View className={`flex flex-row items-center px-3 py-2 gap-x-3 ${containerClasses}`}>
+        <View className={`flex flex-row items-center gap-x-3 ${containerClasses}`}>
           {IconLeft && (
             <IconLeft
               width={iconWidth}
