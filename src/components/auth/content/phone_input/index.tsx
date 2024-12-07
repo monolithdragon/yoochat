@@ -17,8 +17,12 @@ type PhoneInputProps = {
 export function PhoneInput({ defaultCountry = 'HU', ...props }: PhoneInputProps) {
   const { setAuthState, authState } = useAuth();
   const [countryCode, setCountryCode] = useState(
+    countries.find((country) => country.code === defaultCountry)?.code
+  );
+  const [countryDialCode, setCountryDialCode] = useState(
     countries.find((country) => country.code === defaultCountry)?.dial_code
   );
+  const [isFocused, setIsFocused] = useState(false);
 
   const validatePhoneNumber = (value: string) => {
     const cleaned = value.replace(/\D/g, '');
@@ -28,13 +32,18 @@ export function PhoneInput({ defaultCountry = 'HU', ...props }: PhoneInputProps)
   };
 
   const formatFullNumber = (value: string) => {
-    const cleaned = value.replace(/\D/g, '');
-    return `${countryCode}${cleaned}`;
+    const cleaned = value.replace(
+      /^(\+44)(\d{2})(\d{3})(\d{5})$/,
+      (countryDialCode, part1, part2, part3) => {
+        return `${part1} ${part2} ${part3}`;
+      }
+    );
+    return `(${countryDialCode}) ${cleaned}`;
   };
 
   const handlePhoneNumberChange = (value: string) => {
     const isValid = validatePhoneNumber(value);
-    const sanitizedNumber = formatFullNumber(value.replace(/[^\d\s]/g, ''));
+    const sanitizedNumber = formatFullNumber(value);
 
     setAuthState({
       phoneNumber: sanitizedNumber,
@@ -53,41 +62,39 @@ export function PhoneInput({ defaultCountry = 'HU', ...props }: PhoneInputProps)
   );
 
   return (
-    <View className='w-full h-[3.75rem] relativ'>
-      <View className='absolute inset-x-1.5 -inset-y-3 w-1/3 h-full'>
-        <View className='flex-row items-center justify-center flex-1 gap-x-3'>
-          <Dropdown
-            data={countries}
-            value={countryCode}
-            valueField='dial_code'
-            labelField='flag'
-            mode='modal'
-            onChange={(e) => setCountryCode?.(e.dial_code)}
-            renderItem={(item) => renderItem(item)}
-            style={{ width: 40, zIndex: 1000 }}
-            containerStyle={{ width: '90%' }}
-            selectedTextProps={{ style: { fontSize: 24 } }}
-          />
-          <Text className='text-xl font-poppins-regular text-neutral-300'>{`(${countryCode})`}</Text>
-        </View>
+    <View
+      className={`flex flex-row items-center gap-x-3 w-full h-[3.75rem] ${
+        isFocused ? 'border-secondary-500' : 'border-neutral-900 dark:border-neutral-100'
+      } border-b-2 ${!authState.isValidPhoneNumber ? 'border-danger-500' : null}`}>
+      <View className='flex flex-row items-center justify-start gap-x-3'>
+        <Dropdown
+          data={countries}
+          value={countryCode}
+          valueField='code'
+          labelField='flag'
+          mode='modal'
+          search
+          searchPlaceholder='Search...'
+          onChange={(e) => {
+            setCountryDialCode?.(e.dial_code);
+            setCountryCode(e.code);
+          }}
+          renderItem={(item) => renderItem(item)}
+          style={{ width: 40, zIndex: 1000 }}
+          containerStyle={{ width: '90%' }}
+          selectedTextProps={{ style: { fontSize: 24 } }}
+        />
+        <Text className='text-xl font-poppins-regular text-neutral-300'>{`(${countryDialCode})`}</Text>
       </View>
 
       <InputField
+        {...props}
         placeholder='00 000 0000'
         keyboardType='numeric'
-        containerStyle={({ isFocused }) =>
-          [
-            isFocused ? 'border-secondary-500' : 'border-neutral-900 dark:border-neutral-100',
-            'border-b-2',
-            !authState.isValidPhoneNumber ? 'border-danger-500' : null,
-          ]
-            .filter(Boolean)
-            .join(' ')
-        }
-        inputStyle='ml-28'
         onChangeText={(value) => handlePhoneNumberChange(value)}
         maxLength={PHONE_VALIDATION.MAX_LENGTH}
-        {...props}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
     </View>
   );
