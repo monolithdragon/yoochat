@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { colors } from '@/constants/colors';
 import { ButtonProps } from '@/types';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, useColorScheme, View } from 'react-native';
 
 type HeaderProps = {
   title: string;
@@ -25,6 +26,10 @@ export function AuthHeader({
   subtitleClassname,
   ...props
 }: HeaderProps) {
+  const colorScheme = useColorScheme();
+
+  const iconColor = colorScheme === 'dark' ? colors.secondary[500] : colors.primary[500];
+
   return (
     <View className='p-3 gap-y-6'>
       <View className={`flex items-center justify-between w-full ${className}`}>
@@ -35,7 +40,10 @@ export function AuthHeader({
           title={buttonText}
           onPress={onPress}
           IconLeft={IconLeft}
-          className='items-center px-[22px] h-[53px] rounded-full bg-secondary-50 dark:bg-neutral-900'
+          iconWidth={24}
+          iconHeight={24}
+          iconColor={iconColor}
+          className='flex justify-center items-center px-[22px] h-[53px] rounded-full bg-secondary-50 dark:bg-neutral-900'
           labelStyle='text-lg text-primary-500 dark:text-secondary-300 font-poppins-semiBold'
           {...props}
         />
@@ -47,7 +55,7 @@ export function AuthHeader({
         </Text>
         {phoneNumber && (
           <Text
-            className={`text-xl text-white font-poppins-medium ${subtitleClassname}`}>{`Sent to: ${phoneNumber}`}</Text>
+            className={`text-xl text-white dark:text-secondary-300 font-poppins-medium ${subtitleClassname}`}>{`Sent to: ${phoneNumber}`}</Text>
         )}
       </View>
     </View>
