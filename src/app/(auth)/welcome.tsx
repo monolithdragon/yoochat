@@ -49,13 +49,13 @@ export default function Onboarding() {
             onPress={() => {
               router.replace('/(auth)/sign-in');
             }}
-            className='w-[60px] h-[60px]'
+            className='w-[60px] h-[60px] flex items-center justify-center'
             labelStyle='text-base text-secondary-600 font-poppins-bold'
           />
         )}
         <Button
           title={isLastSlide ? 'Get Started' : 'Next'}
-          className={`h-[60px] shadow-lg shadow-black/15 rounded-full ${
+          className={`h-[60px] flex items-center justify-center shadow-lg shadow-black/15 rounded-full ${
             isLastSlide ? 'w-full' : 'w-[60px] bg-secondary-300 dark:bg-secondary-200'
           }`}
           onPress={() =>
