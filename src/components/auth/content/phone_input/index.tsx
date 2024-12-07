@@ -72,7 +72,9 @@ export function PhoneInput({ defaultCountry = 'HU', ...props }: PhoneInputProps)
           value={countryCode}
           valueField='code'
           labelField='flag'
+          searchField='dial_code'
           mode='modal'
+          confirmSelectItem
           search
           searchPlaceholder='Search...'
           onChange={(e) => {
