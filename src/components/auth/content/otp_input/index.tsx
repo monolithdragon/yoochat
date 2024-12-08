@@ -49,7 +49,7 @@ export function OTPInput({ setValidationCode, error, ...props }: OTPInputProps) 
           containerStyle={({ isFocused }) =>
             [
               isFocused ? 'border-secondary-500' : 'border-neutral-900 dark:border-neutral-50',
-              'border-b-2 w-11',
+              'border-b-2 w-11 px-3 text-center',
               `${error ? 'border-danger-500' : ''}`,
             ]
               .filter(Boolean)
