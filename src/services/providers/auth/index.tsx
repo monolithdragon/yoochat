@@ -8,6 +8,7 @@ import SecureStore from 'expo-secure-store';
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null);
+  const [credential, setCredential] = useState<FirebaseAuthTypes.UserCredential>();
   const [authState, setAuthState] = useState<AuthState>({
     phoneNumber: undefined,
     verificationCode: undefined,
@@ -50,25 +51,29 @@ export function AuthProvider({ children }: PropsWithChildren) {
     return confirmationResult;
   };
 
-  const verifyCode = async (
-    verificationId: string,
-    code: string,
-    name?: string,
-    profileImage?: string
-  ) => {
-    const credential = auth.PhoneAuthProvider.credential(verificationId, code);
-    const userCredential = await auth().signInWithCredential(credential);
+  const verifyCode = async (verificationId: string, code: string) => {
+    const localCredential = auth.PhoneAuthProvider.credential(verificationId, code);
 
-    if (userCredential.user && name) {
-      await firestore().collection('users').doc(userCredential.user.uid).set({
-        uid: userCredential.user.uid,
-        phoneNumber: userCredential.user.phoneNumber,
+    const userCredential = await auth().signInWithCredential(localCredential);
+    setCredential(userCredential);
+
+    if (authState.rememberMe) {
+      const token = await userCredential.user.getIdToken(true);
+      await SecureStore.setItemAsync('userToken', token);
+    }
+  };
+
+  const createUser = async (name: string, profileImage?: string) => {
+    if (credential?.user && name) {
+      await firestore().collection('users').doc(credential.user.uid).set({
+        uid: credential.user.uid,
+        phoneNumber: credential.user.phoneNumber,
         name,
         profileImage,
       });
 
       if (authState.rememberMe) {
-        const token = await userCredential.user.getIdToken(true);
+        const token = await credential.user.getIdToken(true);
         await SecureStore.setItemAsync('userToken', token);
       }
     }
@@ -87,6 +92,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     user,
     signInWithPhone,
     verifyCode,
+    createUser,
     signOut,
     authState,
     setAuthState: setAuthStateValue,

@@ -6,12 +6,9 @@ import React from 'react';
 export interface AuthContextType {
   user: User | null;
   signInWithPhone: (phoneNumber: string) => Promise<FirebaseAuthTypes.ConfirmationResult>;
-  verifyCode: (
-    verificationId: string,
-    code: string,
-    name?: string,
-    profileImage?: string
-  ) => Promise<void>;
+  verifyCode: (verificationId: string, code: string) => Promise<void>;
+  createUser: (name: string, profileImage?: string) => Promise<void>;
+
   signOut: () => Promise<void>;
   authState: AuthState;
   setAuthState: (value: AuthState) => void;
